@@ -2,7 +2,7 @@
 
 A calculator built with vanilla HTML, CSS and JavaScript for the GDG Algiers frontend challenge. It has full keyboard support and correct operator precedence, and it uses no framework, no library, and no `eval()`.
 
-**Live demo:** https://YOUR-USERNAME.github.io/interactive-calculator/ <!-- replace after deploying -->
+**Live demo:** https://zaki-123610.github.io/interactive-calculator/ <!-- replace after deploying -->
 
 ## Features
 
