@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="A responsive calculator with correct operator precedence and keyboard support, written in vanilla HTML, CSS and JavaScript.">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#e8ecf2" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#090b0f" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#3a3a3a">
   <title>Calculator · Vanilla JS</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a73e8'/%3E%3Cpath d='M20 32h24M32 20v24' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23ff9500'/%3E%3Cpath d='M20 32h24M32 20v24' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
   <script src="js/decimal.js" defer></script>
   <script src="js/parser.js" defer></script>
@@ -62,14 +61,6 @@
         <button type="button" class="key" data-action="decimal" aria-label="Decimal point" aria-keyshortcuts=". ," title="Decimal point (. or ,)">.</button>
       </div>
     </section>
-
-    <footer class="app__footer">
-      <p class="app__hint">
-        Use your keyboard: <kbd>0</kbd>–<kbd>9</kbd> <kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd> <kbd>(</kbd> <kbd>)</kbd> <kbd>%</kbd>,
-        <kbd>Enter</kbd> equals, <kbd>Backspace</kbd> deletes, <kbd>Esc</kbd> clears, <kbd>F9</kbd> toggles the sign
-      </p>
-      <p>Vanilla HTML, CSS &amp; JavaScript · no <code>eval()</code>, no libraries</p>
-    </footer>
   </main>
 </body>
 </html>

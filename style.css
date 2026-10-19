@@ -1,59 +1,30 @@
 :root {
   color-scheme: light;
-  --font-sans: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --page: #e8ecf2;
-  --page-glow-1: #d5e3ff;
-  --page-glow-2: #d9f2e4;
-  --surface: #ffffff;
-  --surface-border: rgb(15 23 42 / 0.06);
-  --shadow: 0 1px 2px rgb(15 23 42 / 0.06), 0 30px 60px -20px rgb(15 23 42 / 0.28);
-  --text: #0f172a;
-  --muted: #64748b;
+  --page: #f0f0f0;
+  --card: #252525;
+  --screen: #3a3a3a;
+  --text: #ffffff;
+  --muted: #b3b3b3;
+  --digit: #4a4a4a;
+  --fn: #6b6b6b;
+  --orange: #ff9500;
+  --error: #ff8a80;
+  --focus: #ffffff;
 
-  --key: #f1f4f8;
-  --key-text: #0f172a;
-  --fn: #e3e8ef;
-  --fn-text: #334155;
-  --op: #e4edfd;
-  --op-text: #1a5fd0;
-  --equals: #1a73e8;
-  --equals-text: #ffffff;
-  --danger: #c5221f;
-  --danger-bg: #fce8e6;
-  --focus: #1a73e8;
-
-  --radius-card: 28px;
-  --radius-key: 18px;
+  --radius-card: 12px;
   --gap: 12px;
-  --font-big: 3.25rem;
-  --font-small: 1.25rem;
-  --key-height: clamp(3rem, calc((100vh - 410px) / 6), 4.25rem);
+  --pad: 20px;
+  --font-big: 3rem;
+  --font-small: 1.2rem;
+  --key-size: clamp(2.75rem, calc((100vh - 300px) / 6), 4.5rem);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --page: #090b0f;
-    --page-glow-1: #122042;
-    --page-glow-2: #0e2a1d;
-    --surface: #12151c;
-    --surface-border: rgb(255 255 255 / 0.06);
-    --shadow: 0 30px 70px -20px rgb(0 0 0 / 0.7);
-    --text: #f1f5f9;
-    --muted: #8b95a7;
-
-    --key: #1c2029;
-    --key-text: #f1f5f9;
-    --fn: #272c38;
-    --fn-text: #cbd5e1;
-    --op: #1d2a42;
-    --op-text: #8ab4f8;
-    --equals: #8ab4f8;
-    --equals-text: #0b1220;
-    --danger: #f28b82;
-    --danger-bg: #3a1f22;
-    --focus: #8ab4f8;
+    --page: #111111;
   }
 }
 
@@ -77,10 +48,7 @@ body {
   padding: 24px 16px;
   font-family: var(--font-sans);
   color: var(--text);
-  background:
-    radial-gradient(60rem 40rem at 10% -10%, var(--page-glow-1), transparent 60%),
-    radial-gradient(50rem 35rem at 110% 110%, var(--page-glow-2), transparent 60%),
-    var(--page);
+  background: var(--page);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -97,63 +65,23 @@ body {
 }
 
 .app {
-  width: 100%;
-  max-width: 400px;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  justify-content: center;
 }
 
 .calculator {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
+  width: calc(4 * var(--key-size) + 3 * var(--gap) + 2 * var(--pad));
+  overflow: hidden;
+  background: var(--card);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow);
-}
-
-.app__footer {
-  text-align: center;
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: var(--muted);
-}
-
-.app__footer p {
-  margin: 0;
-}
-
-.app__footer .app__hint {
-  margin-bottom: 6px;
-}
-
-kbd {
-  display: inline-block;
-  min-width: 1.5em;
-  padding: 0 0.35em;
-  border: 1px solid var(--surface-border);
-  border-bottom-width: 2px;
-  border-radius: 6px;
-  background: var(--surface);
-  font: inherit;
-  font-size: 0.75rem;
-  line-height: 1.5;
-  color: var(--text);
-  text-align: center;
-}
-
-@media (hover: none) and (pointer: coarse), (max-height: 720px) {
-  .app__hint {
-    display: none;
-  }
 }
 
 .noscript {
   margin: 0;
-  color: var(--danger);
+  padding: var(--pad) var(--pad) 0;
+  color: var(--error);
   text-align: center;
 }
 
@@ -162,8 +90,9 @@ kbd {
   flex-direction: column;
   justify-content: flex-end;
   gap: 4px;
-  min-height: 8.5rem;
-  padding: 8px 6px 4px;
+  min-height: 8rem;
+  padding: 16px 24px;
+  background: var(--screen);
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -188,18 +117,13 @@ kbd {
 .display[data-mode="error"] .display__expression,
 .display[data-mode="result"] .display__result {
   font-size: calc(var(--font-big) * var(--fit, 1));
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 400;
   color: var(--text);
 }
 
-.display[data-mode="result"] .display__result {
-  font-weight: 600;
-}
-
 .display[data-mode="error"] .display__result {
-  font-weight: 500;
-  color: var(--danger);
+  font-weight: 600;
+  color: var(--error);
 }
 
 .ghost {
@@ -208,25 +132,26 @@ kbd {
 
 .keypad {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: var(--key-height);
+  grid-template-columns: repeat(4, var(--key-size));
+  grid-auto-rows: var(--key-size);
   gap: var(--gap);
+  justify-content: center;
+  padding: var(--pad);
 }
 
 .key {
-  --bg: var(--key);
-  --fg: var(--key-text);
+  --bg: var(--digit);
   display: grid;
   place-items: center;
   min-width: 0;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-key);
+  border-radius: 999px;
   background: var(--bg);
-  color: var(--fg);
+  color: var(--text);
   font: inherit;
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.6rem;
+  font-weight: 700;
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
@@ -236,52 +161,52 @@ kbd {
 }
 
 .key svg {
-  width: 1.6rem;
-  height: 1.6rem;
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.key svg path {
+  stroke-width: 2.2;
 }
 
 @media (hover: hover) {
   .key:hover {
-    background: color-mix(in srgb, var(--bg), var(--fg) 8%);
+    background: color-mix(in srgb, var(--bg), #ffffff 14%);
   }
 }
 
 .key:active,
 .key.is-pressed {
-  background: color-mix(in srgb, var(--bg), var(--fg) 18%);
+  background: color-mix(in srgb, var(--bg), #ffffff 28%);
   transform: scale(0.94);
 }
 
 .key:focus-visible {
   outline: 3px solid var(--focus);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .key--fn {
   --bg: var(--fn);
-  --fg: var(--fn-text);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
+}
+
+.key--op,
+.key--clear {
+  --bg: var(--orange);
 }
 
 .key--op {
-  --bg: var(--op);
-  --fg: var(--op-text);
-  font-size: 1.75rem;
+  font-size: 2rem;
 }
 
 .key--clear {
-  --bg: var(--danger-bg);
-  --fg: var(--danger);
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: 1.3rem;
 }
 
 .key--equals {
-  --bg: var(--equals);
-  --fg: var(--equals-text);
   grid-row: span 2;
-  font-size: 1.9rem;
+  font-size: 2rem;
 }
 
 .key--zero {
@@ -289,46 +214,54 @@ kbd {
 }
 
 @media (max-width: 480px) {
+  :root {
+    --gap: 10px;
+    --pad: 16px;
+    --key-size: max(2.5rem, min(calc((100vw - 62px) / 4), calc((100vh - 200px) / 6), 6rem));
+  }
+
   body {
     padding: 0;
     place-items: stretch;
-    background: var(--surface);
+    background: var(--card);
   }
 
   .app {
-    max-width: none;
     min-height: 100vh;
     min-height: 100dvh;
   }
 
   .calculator {
     flex: 1;
-    padding: max(16px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
-    border: 0;
+    width: 100%;
     border-radius: 0;
-    box-shadow: none;
   }
 
   .display {
     flex: 1;
     min-height: 6rem;
+    padding: max(16px, env(safe-area-inset-top)) 20px 16px;
   }
 
   .keypad {
-    --gap: 10px;
-    grid-auto-rows: clamp(2.75rem, calc((100vh - 230px) / 6), 5.25rem);
-    grid-auto-rows: clamp(2.75rem, calc((100svh - 230px) / 6), 5.25rem);
+    padding-bottom: max(var(--pad), env(safe-area-inset-bottom));
   }
+}
 
-  .app__footer {
-    display: none;
+@supports (height: 100svh) {
+  @media (max-width: 480px) {
+    :root {
+      --key-size: max(2.5rem, min(calc((100vw - 62px) / 4), calc((100svh - 200px) / 6), 6rem));
+    }
   }
 }
 
 @media (max-height: 560px) and (min-width: 560px) {
   :root {
-    --font-big: 2.5rem;
     --gap: 8px;
+    --pad: 12px;
+    --font-big: 2.5rem;
+    --key-size: max(2.25rem, min(3.5rem, calc((100vh - 88px) / 6)));
   }
 
   body {
@@ -336,13 +269,13 @@ kbd {
   }
 
   .app {
-    max-width: 760px;
+    width: 100%;
   }
 
   .calculator {
     flex-direction: row;
-    gap: 20px;
-    padding: 16px;
+    width: 100%;
+    max-width: 760px;
   }
 
   .display {
@@ -352,13 +285,15 @@ kbd {
   }
 
   .keypad {
-    flex: 1.25;
-    grid-auto-rows: min(3.5rem, calc((100vh - 58px - 5 * var(--gap)) / 6));
-    grid-auto-rows: min(3.5rem, calc((100dvh - 58px - 5 * var(--gap)) / 6));
+    flex: none;
   }
+}
 
-  .app__footer {
-    display: none;
+@supports (height: 100dvh) {
+  @media (max-height: 560px) and (min-width: 560px) {
+    :root {
+      --key-size: max(2.25rem, min(3.5rem, calc((100dvh - 88px) / 6)));
+    }
   }
 }
 

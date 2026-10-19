@@ -12,7 +12,7 @@ A calculator built with vanilla HTML, CSS and JavaScript for the GDG Algiers fro
 - **Full expression and result:** the expression is shown as you type, with a live preview of the result. After `=`, the expression stays visible above the result.
 - **Clear errors:** division by zero, invalid or incomplete expressions, mismatched parentheses and overflow each get a message. The expression is kept so you can fix it.
 - **Keyboard support:** the matching on-screen button lights up on every key press.
-- **Responsive:** a card layout on desktop, a full-screen layout on phones, and a side-by-side layout in landscape. Light and dark themes follow the system setting.
+- **Responsive:** a dark card with round keys on desktop, a full-screen layout on phones, and a side-by-side layout in landscape.
 - **Accessible:** real `<button>`s with labels, visible focus rings, `aria-keyshortcuts`, results and errors announced to screen readers, and support for reduced motion.
 
 ### Keyboard shortcuts
@@ -58,7 +58,7 @@ The expression is evaluated in three stages in [`js/parser.js`](js/parser.js), w
 
 ```
 index.html          markup: display, keypad, live region
-style.css           design tokens, light/dark themes, responsive layout
+style.css           colours, round keypad, responsive layout
 js/decimal.js       exact decimal arithmetic on BigInt
 js/parser.js        tokenizer → shunting-yard → RPN evaluator (no DOM)
 js/calculator.js    input rules: what each key does to the expression (no DOM)
