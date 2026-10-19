@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="A responsive calculator with correct operator precedence and keyboard support, written in vanilla HTML, CSS and JavaScript.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#e8ecf2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#090b0f" media="(prefers-color-scheme: dark)">
+  <title>Calculator · Vanilla JS</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a73e8'/%3E%3Cpath d='M20 32h24M32 20v24' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <!-- Order matters: each script uses the globals defined by the previous ones. -->
+  <script src="js/decimal.js" defer></script>
+  <script src="js/parser.js" defer></script>
+  <script src="js/calculator.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <h1 class="visually-hidden">Calculator</h1>
+
+    <section class="calculator" aria-label="Calculator">
+      <div class="display" data-mode="editing">
+        <div class="display__line display__expression" id="expression">0</div>
+        <div class="display__line display__result" id="result"></div>
+      </div>
+      <p class="visually-hidden" id="announcer" role="status" aria-live="polite" aria-atomic="true"></p>
+      <noscript><p class="noscript">This calculator needs JavaScript to run.</p></noscript>
+
+      <div class="keypad" role="group" aria-label="Keypad">
+        <button type="button" class="key key--clear" data-action="clear" aria-label="All clear">AC</button>
+        <button type="button" class="key key--fn" data-action="backspace" aria-label="Backspace">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8.6 5H20a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 20 19H8.6a1.5 1.5 0 0 1-1.1-.5L2.5 12l5-6.5a1.5 1.5 0 0 1 1.1-.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="m11.5 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button type="button" class="key key--fn" data-action="percent" aria-label="Percent">%</button>
+        <button type="button" class="key key--op" data-action="operator" data-value="/" aria-label="Divide">÷</button>
+
+        <button type="button" class="key key--fn" data-action="paren" data-value="(" aria-label="Open parenthesis">(</button>
+        <button type="button" class="key key--fn" data-action="paren" data-value=")" aria-label="Close parenthesis">)</button>
+        <button type="button" class="key key--fn" data-action="negate" aria-label="Toggle sign">±</button>
+        <button type="button" class="key key--op" data-action="operator" data-value="*" aria-label="Multiply">×</button>
+
+        <button type="button" class="key" data-action="digit" data-value="7">7</button>
+        <button type="button" class="key" data-action="digit" data-value="8">8</button>
+        <button type="button" class="key" data-action="digit" data-value="9">9</button>
+        <button type="button" class="key key--op" data-action="operator" data-value="-" aria-label="Minus">−</button>
+
+        <button type="button" class="key" data-action="digit" data-value="4">4</button>
+        <button type="button" class="key" data-action="digit" data-value="5">5</button>
+        <button type="button" class="key" data-action="digit" data-value="6">6</button>
+        <button type="button" class="key key--op" data-action="operator" data-value="+" aria-label="Plus">+</button>
+
+        <button type="button" class="key" data-action="digit" data-value="1">1</button>
+        <button type="button" class="key" data-action="digit" data-value="2">2</button>
+        <button type="button" class="key" data-action="digit" data-value="3">3</button>
+        <button type="button" class="key key--equals" data-action="evaluate" aria-label="Equals">=</button>
+
+        <button type="button" class="key key--zero" data-action="digit" data-value="0">0</button>
+        <button type="button" class="key" data-action="decimal" aria-label="Decimal point">.</button>
+      </div>
+    </section>
+
+    <footer class="app__footer">
+      <p>Vanilla HTML, CSS &amp; JavaScript · no <code>eval()</code>, no libraries</p>
+    </footer>
+  </main>
+</body>
+</html>
