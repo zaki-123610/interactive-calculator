@@ -29,20 +29,20 @@
       <noscript><p class="noscript">This calculator needs JavaScript to run.</p></noscript>
 
       <div class="keypad" role="group" aria-label="Keypad">
-        <button type="button" class="key key--clear" data-action="clear" aria-label="All clear">AC</button>
-        <button type="button" class="key key--fn" data-action="backspace" aria-label="Backspace">
+        <button type="button" class="key key--clear" data-action="clear" aria-label="All clear" aria-keyshortcuts="Escape Delete" title="All clear (Esc)">AC</button>
+        <button type="button" class="key key--fn" data-action="backspace" aria-label="Backspace" aria-keyshortcuts="Backspace" title="Backspace">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M8.6 5H20a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 20 19H8.6a1.5 1.5 0 0 1-1.1-.5L2.5 12l5-6.5a1.5 1.5 0 0 1 1.1-.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
             <path d="m11.5 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
           </svg>
         </button>
-        <button type="button" class="key key--fn" data-action="percent" aria-label="Percent">%</button>
-        <button type="button" class="key key--op" data-action="operator" data-value="/" aria-label="Divide">÷</button>
+        <button type="button" class="key key--fn" data-action="percent" aria-label="Percent" aria-keyshortcuts="%" title="Percent (%)">%</button>
+        <button type="button" class="key key--op" data-action="operator" data-value="/" aria-label="Divide" aria-keyshortcuts="/" title="Divide (/)">÷</button>
 
         <button type="button" class="key key--fn" data-action="paren" data-value="(" aria-label="Open parenthesis">(</button>
         <button type="button" class="key key--fn" data-action="paren" data-value=")" aria-label="Close parenthesis">)</button>
-        <button type="button" class="key key--fn" data-action="negate" aria-label="Toggle sign">±</button>
-        <button type="button" class="key key--op" data-action="operator" data-value="*" aria-label="Multiply">×</button>
+        <button type="button" class="key key--fn" data-action="negate" aria-label="Toggle sign" aria-keyshortcuts="F9" title="Toggle sign (F9)">±</button>
+        <button type="button" class="key key--op" data-action="operator" data-value="*" aria-label="Multiply" aria-keyshortcuts="* x" title="Multiply (* or x)">×</button>
 
         <button type="button" class="key" data-action="digit" data-value="7">7</button>
         <button type="button" class="key" data-action="digit" data-value="8">8</button>
@@ -57,14 +57,18 @@
         <button type="button" class="key" data-action="digit" data-value="1">1</button>
         <button type="button" class="key" data-action="digit" data-value="2">2</button>
         <button type="button" class="key" data-action="digit" data-value="3">3</button>
-        <button type="button" class="key key--equals" data-action="evaluate" aria-label="Equals">=</button>
+        <button type="button" class="key key--equals" data-action="evaluate" aria-label="Equals" aria-keyshortcuts="Enter =" title="Equals (Enter)">=</button>
 
         <button type="button" class="key key--zero" data-action="digit" data-value="0">0</button>
-        <button type="button" class="key" data-action="decimal" aria-label="Decimal point">.</button>
+        <button type="button" class="key" data-action="decimal" aria-label="Decimal point" aria-keyshortcuts=". ," title="Decimal point (. or ,)">.</button>
       </div>
     </section>
 
     <footer class="app__footer">
+      <p class="app__hint">
+        Use your keyboard: <kbd>0</kbd>–<kbd>9</kbd> <kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd> <kbd>(</kbd> <kbd>)</kbd> <kbd>%</kbd>,
+        <kbd>Enter</kbd> equals, <kbd>Backspace</kbd> deletes, <kbd>Esc</kbd> clears, <kbd>F9</kbd> toggles the sign
+      </p>
       <p>Vanilla HTML, CSS &amp; JavaScript · no <code>eval()</code>, no libraries</p>
     </footer>
   </main>

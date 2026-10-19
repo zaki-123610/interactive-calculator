@@ -38,7 +38,7 @@
   --font-big: 3.25rem;
   --font-small: 1.25rem;
   /* Six rows share the height left after the display, paddings and footer. */
-  --key-height: clamp(3rem, calc((100vh - 360px) / 6), 4.25rem);
+  --key-height: clamp(3rem, calc((100vh - 410px) / 6), 4.25rem);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -138,6 +138,33 @@ body {
 
 .app__footer p {
   margin: 0;
+}
+
+.app__footer .app__hint {
+  margin-bottom: 6px;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 0 0.35em;
+  border: 1px solid var(--surface-border);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text);
+  text-align: center;
+}
+
+/* No physical keyboard to hint at on touch-only devices, and no room for the
+   hint on short screens (the key tooltips still list the shortcuts). */
+@media (hover: none) and (pointer: coarse), (max-height: 720px) {
+  .app__hint {
+    display: none;
+  }
 }
 
 .noscript {
@@ -242,7 +269,9 @@ body {
   }
 }
 
-.key:active {
+/* .is-pressed mirrors :active when the key is pressed on a physical keyboard. */
+.key:active,
+.key.is-pressed {
   background: color-mix(in srgb, var(--bg), var(--fg) 18%);
   transform: scale(0.94);
 }

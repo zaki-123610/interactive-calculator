@@ -108,7 +108,68 @@
 
   keypad.addEventListener('click', (event) => {
     const button = event.target.closest('button[data-action]');
-    if (button) run(button.dataset.action, button.dataset.value);
+    if (!button) return;
+    run(button.dataset.action, button.dataset.value);
+    // After a mouse or touch click (detail > 0) drop the focus, otherwise a
+    // later Enter would press that button again instead of meaning "=".
+    // Keyboard activation (detail === 0) keeps focus for Tab navigation.
+    if (event.detail > 0) button.blur();
+  });
+
+  /* ---------- Keyboard input ---------- */
+
+  /** event.key → [action, value]. Digits are handled separately. */
+  const KEY_BINDINGS = new Map([
+    ['+', ['operator', '+']],
+    ['-', ['operator', '-']],
+    ['*', ['operator', '*']],
+    ['x', ['operator', '*']],
+    ['X', ['operator', '*']],
+    ['/', ['operator', '/']],
+    ['.', ['decimal']],
+    [',', ['decimal']], // numeric keypads on AZERTY and other layouts
+    ['(', ['paren', '(']],
+    [')', ['paren', ')']],
+    ['%', ['percent']],
+    ['Enter', ['evaluate']],
+    ['=', ['evaluate']],
+    ['Backspace', ['backspace']],
+    ['Escape', ['clear']],
+    ['Delete', ['clear']],
+    ['F9', ['negate']], // same shortcut as the Windows calculator
+  ]);
+
+  function bindingFor(key) {
+    return /^\d$/.test(key) ? ['digit', key] : KEY_BINDINGS.get(key);
+  }
+
+  function buttonFor(action, value) {
+    const valueSelector = value === undefined ? '' : `[data-value="${value}"]`;
+    return keypad.querySelector(`[data-action="${action}"]${valueSelector}`);
+  }
+
+  const highlightTimers = new WeakMap();
+
+  /** Lights up the on-screen button matching a physical key press. */
+  function highlight(button) {
+    if (!button) return;
+    button.classList.add('is-pressed');
+    clearTimeout(highlightTimers.get(button));
+    highlightTimers.set(button, setTimeout(() => button.classList.remove('is-pressed'), 150));
+  }
+
+  document.addEventListener('keydown', (event) => {
+    // Leave browser shortcuts such as Ctrl+R or Cmd+C alone.
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    // Enter on a keyboard-focused keypad button activates that button natively.
+    if (event.key === 'Enter' && event.target instanceof Element && event.target.closest('.keypad button')) return;
+
+    const binding = bindingFor(event.key);
+    if (!binding) return;
+    event.preventDefault(); // e.g. "/" would open Quick Find in Firefox
+    const [action, value] = binding;
+    run(action, value);
+    highlight(buttonFor(action, value));
   });
 
   render();
