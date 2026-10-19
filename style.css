@@ -37,7 +37,8 @@
   --gap: 12px;
   --font-big: 3.25rem;
   --font-small: 1.25rem;
-  --key-height: clamp(3rem, 8.4vh, 4.25rem);
+  /* Six rows share the height left after the display, paddings and footer. */
+  --key-height: clamp(3rem, calc((100vh - 360px) / 6), 4.25rem);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -308,12 +309,14 @@ body {
 
   .display {
     flex: 1;
+    min-height: 6rem;
   }
 
   .keypad {
     --gap: 10px;
-    grid-auto-rows: clamp(3.25rem, 10.5vh, 5.25rem);
-    grid-auto-rows: clamp(3.25rem, 10.5svh, 5.25rem);
+    /* Height left after the display (6rem), paddings and gaps, split in 6 rows. */
+    grid-auto-rows: clamp(2.75rem, calc((100vh - 230px) / 6), 5.25rem);
+    grid-auto-rows: clamp(2.75rem, calc((100svh - 230px) / 6), 5.25rem);
   }
 
   .app__footer {
@@ -321,20 +324,43 @@ body {
   }
 }
 
-/* Short screens such as phones in landscape. */
-@media (max-height: 600px) and (min-width: 481px) {
+/* Short, wide screens such as phones in landscape: display beside the keypad,
+   keys sized so that all six rows fit the viewport height. */
+@media (max-height: 560px) and (min-width: 560px) {
   :root {
-    --key-height: clamp(2.5rem, 9vh, 3.5rem);
     --font-big: 2.5rem;
     --gap: 8px;
   }
 
   body {
-    padding-block: 12px;
+    padding: 12px max(12px, env(safe-area-inset-right)) 12px max(12px, env(safe-area-inset-left));
+  }
+
+  .app {
+    max-width: 760px;
+  }
+
+  .calculator {
+    flex-direction: row;
+    gap: 20px;
+    padding: 16px;
   }
 
   .display {
-    min-height: 5.5rem;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .keypad {
+    flex: 1.25;
+    /* viewport − body padding (24) − card padding and border (34) − 5 gaps */
+    grid-auto-rows: min(3.5rem, calc((100vh - 58px - 5 * var(--gap)) / 6));
+    grid-auto-rows: min(3.5rem, calc((100dvh - 58px - 5 * var(--gap)) / 6));
+  }
+
+  .app__footer {
+    display: none;
   }
 }
 
