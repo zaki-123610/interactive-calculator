@@ -1,16 +1,13 @@
-// Run with: node --test
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { calculate, tokenize, toRPN, CalcError } = require('../js/parser.js');
 
-/** Asserts that every [expression, expected] pair evaluates as expected. */
 function expectResults(cases) {
   for (const [expression, expected] of cases) {
     assert.equal(calculate(expression), expected, `${expression} should be ${expected}`);
   }
 }
 
-/** Asserts that every expression fails with the given CalcError code. */
 function expectError(code, expressions) {
   for (const expression of expressions) {
     assert.throws(

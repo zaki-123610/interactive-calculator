@@ -1,19 +1,9 @@
-/**
- * calculator.js: the input state machine behind the keypad.
- *
- * It decides what each key does to the expression being typed (one decimal
- * point per number, no doubled operators, "×" inserted before "(", ...) and
- * delegates the maths to CalcParser. No DOM access: app.js renders it.
- *
- * The expression is kept in ASCII form, e.g. "2*(3+4)"; app.js prettifies it.
- */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory(require('./parser.js'));
   else root.Calculator = factory(root.CalcParser);
 })(globalThis, function (Parser) {
   'use strict';
 
-  /** Most digits a single number may have. */
   const MAX_DIGITS = 15;
 
   const TRAILING_NUMBER = /(?:\d+\.?\d*|\.\d*)(?:e[+-]?\d+)?$/;
@@ -47,7 +37,6 @@
       this.clear();
     }
 
-    /** Runs a keypad action, e.g. dispatch('digit', '7') or dispatch('operator', '*'). */
     dispatch(action, value) {
       switch (action) {
         case 'digit': return this.inputDigit(value);
@@ -65,18 +54,18 @@
 
     clear() {
       this.expression = '';
-      this.history = ''; // the expression behind the result on screen
+      this.history = '';
       this.error = '';
-      this.evaluated = false; // true while a result is on screen
+      this.evaluated = false;
     }
 
     inputDigit(digit) {
       this.#beginTyping();
       let expr = this.expression;
-      if (/[)%]$/.test(expr)) expr += '*'; // "(2+3)" then "4" → "(2+3)×4"
+      if (/[)%]$/.test(expr)) expr += '*';
       const number = trailingNumber(expr);
       if (number.includes('e') || number.replace('.', '').length >= MAX_DIGITS) return;
-      if (number === '0') expr = expr.slice(0, -1); // no leading zeros: "0" then "5" → "5"
+      if (number === '0') expr = expr.slice(0, -1);
       this.expression = expr + digit;
     }
 
@@ -85,7 +74,7 @@
       let expr = this.expression;
       if (/[)%]$/.test(expr)) expr += '*';
       const number = trailingNumber(expr);
-      if (/[.e]/.test(number)) return; // one decimal point per number
+      if (/[.e]/.test(number)) return;
       this.expression = expr + (number === '' ? '0.' : '.');
     }
 
@@ -97,9 +86,8 @@
       } else if (endsWithOperand(expr)) {
         this.expression = expr + op;
       } else if (op === '-' && '(*/'.includes(expr.slice(-1))) {
-        this.expression = expr + op; // unary minus: "2×-3", "(-2"
+        this.expression = expr + op;
       } else {
-        // Replace the trailing operator(s): "2+" then "×" → "2×".
         const base = expr.replace(/[+\-*/]+$/, '');
         if (base !== '' && !base.endsWith('(')) this.expression = base + op;
       }
@@ -108,7 +96,7 @@
     openParen() {
       this.#beginTyping();
       let expr = withoutTrailingDot(this.expression);
-      if (endsWithOperand(expr)) expr += '*'; // "2(" → "2×("
+      if (endsWithOperand(expr)) expr += '*';
       this.expression = expr + '(';
     }
 
@@ -116,7 +104,6 @@
       if (this.evaluated) return;
       this.error = '';
       const expr = withoutTrailingDot(this.expression);
-      // Only close an open "(" right after an operand: no "()" or "(2+)".
       if (openParenCount(expr) > 0 && endsWithOperand(expr)) this.expression = expr + ')';
     }
 
@@ -126,7 +113,6 @@
       if (/[\d)]$/.test(expr)) this.expression = expr + '%';
     }
 
-    /** Toggles the sign of the last operand: 5 → -5, 2+3 → 2+-3, (1+2) → -(1+2). */
     negate() {
       this.#resumeTyping();
       const expr = this.expression;
@@ -142,13 +128,11 @@
 
     backspace() {
       this.#resumeTyping();
-      // Never leave a dangling exponent such as "1e+" behind.
       this.expression = this.expression.slice(0, -1).replace(/e[+-]?$/, '');
     }
 
     evaluate() {
       if (this.evaluated || this.expression === '') return;
-      // Close any parentheses left open, like most calculators do.
       const expression = this.expression + ')'.repeat(openParenCount(this.expression));
       try {
         const result = Parser.calculate(expression);
@@ -162,10 +146,6 @@
       }
     }
 
-    /**
-     * Snapshot for rendering. `mode` is 'editing', 'result' or 'error';
-     * `preview` is the live result while typing (empty when not computable).
-     */
     getState() {
       const openParens = openParenCount(this.expression);
       let mode = 'editing';
@@ -184,13 +164,11 @@
       return { mode, expression: this.expression, history: this.history, preview, error: this.error, openParens };
     }
 
-    /** Digits, "." and "(" typed after a result start a new expression. */
     #beginTyping() {
       if (this.evaluated) this.clear();
       this.error = '';
     }
 
-    /** Operators, "%", "±" and backspace after a result keep working on it. */
     #resumeTyping() {
       this.evaluated = false;
       this.history = '';

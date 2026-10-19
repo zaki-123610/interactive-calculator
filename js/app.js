@@ -1,10 +1,3 @@
-/**
- * app.js: the DOM layer.
- *
- * Renders the Calculator state into the display and turns button clicks into
- * calculator actions. There is no maths here: parsing and evaluation live in
- * parser.js, input rules in calculator.js.
- */
 (function () {
   'use strict';
 
@@ -20,14 +13,10 @@
 
   const OPERATOR_SYMBOLS = { '+': '+', '-': '−', '*': '×', '/': '÷' };
 
-  /* ---------- Formatting ---------- */
-
-  /** Thousands separators and a true minus sign: "-1234.5" → "−1,234.5". */
   function formatNumber(number) {
     return number.replace(/^(-?)(\d+)/, (match, sign, int) => (sign && '−') + int.replace(/\B(?=(\d{3})+$)/g, ','));
   }
 
-  /** Pretty-prints an ASCII expression: "2*-3+4" → "2 × −3 + 4". */
   function formatExpression(expression) {
     let tokens;
     try {
@@ -45,15 +34,12 @@
       .join('');
   }
 
-  /** Font scale for the main line, so long numbers stay readable. */
   function fitScale(text) {
     if (text.length <= 10) return 1;
     if (text.length <= 13) return 0.8;
     if (text.length <= 17) return 0.64;
     return 0.52;
   }
-
-  /* ---------- Rendering ---------- */
 
   function render() {
     const state = calculator.getState();
@@ -68,7 +54,6 @@
       mainText = state.expression ? formatExpression(state.expression) : '0';
       expressionLine.textContent = mainText;
       if (state.openParens > 0) {
-        // Show, greyed out, the parentheses that "=" will close.
         const ghost = document.createElement('span');
         ghost.className = 'ghost';
         ghost.setAttribute('aria-hidden', 'true');
@@ -79,14 +64,12 @@
     }
 
     display.style.setProperty('--fit', fitScale(mainText));
-    expressionLine.scrollLeft = expressionLine.scrollWidth; // keep the latest input in view
+    expressionLine.scrollLeft = expressionLine.scrollWidth;
     return state;
   }
 
-  /** Reads a message out through the polite live region. */
   function announce(message) {
     announcer.textContent = '';
-    // Setting the text in a later task makes screen readers repeat identical messages.
     setTimeout(() => {
       announcer.textContent = message;
     }, 50);
@@ -104,21 +87,13 @@
     }
   }
 
-  /* ---------- Pointer input ---------- */
-
   keypad.addEventListener('click', (event) => {
     const button = event.target.closest('button[data-action]');
     if (!button) return;
     run(button.dataset.action, button.dataset.value);
-    // After a mouse or touch click (detail > 0) drop the focus, otherwise a
-    // later Enter would press that button again instead of meaning "=".
-    // Keyboard activation (detail === 0) keeps focus for Tab navigation.
     if (event.detail > 0) button.blur();
   });
 
-  /* ---------- Keyboard input ---------- */
-
-  /** event.key → [action, value]. Digits are handled separately. */
   const KEY_BINDINGS = new Map([
     ['+', ['operator', '+']],
     ['-', ['operator', '-']],
@@ -127,7 +102,7 @@
     ['X', ['operator', '*']],
     ['/', ['operator', '/']],
     ['.', ['decimal']],
-    [',', ['decimal']], // numeric keypads on AZERTY and other layouts
+    [',', ['decimal']],
     ['(', ['paren', '(']],
     [')', ['paren', ')']],
     ['%', ['percent']],
@@ -136,7 +111,7 @@
     ['Backspace', ['backspace']],
     ['Escape', ['clear']],
     ['Delete', ['clear']],
-    ['F9', ['negate']], // same shortcut as the Windows calculator
+    ['F9', ['negate']],
   ]);
 
   function bindingFor(key) {
@@ -150,7 +125,6 @@
 
   const highlightTimers = new WeakMap();
 
-  /** Lights up the on-screen button matching a physical key press. */
   function highlight(button) {
     if (!button) return;
     button.classList.add('is-pressed');
@@ -159,14 +133,12 @@
   }
 
   document.addEventListener('keydown', (event) => {
-    // Leave browser shortcuts such as Ctrl+R or Cmd+C alone.
     if (event.ctrlKey || event.metaKey || event.altKey) return;
-    // Enter on a keyboard-focused keypad button activates that button natively.
     if (event.key === 'Enter' && event.target instanceof Element && event.target.closest('.keypad button')) return;
 
     const binding = bindingFor(event.key);
     if (!binding) return;
-    event.preventDefault(); // e.g. "/" would open Quick Find in Firefox
+    event.preventDefault();
     const [action, value] = binding;
     run(action, value);
     highlight(buttonFor(action, value));

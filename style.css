@@ -1,12 +1,3 @@
-/* ==========================================================================
-   Calculator styles
-   1. Design tokens (light + dark)   4. Display
-   2. Base                           5. Keypad
-   3. Layout                         6. Responsive & motion
-   ========================================================================== */
-
-/* 1. Design tokens ------------------------------------------------------- */
-
 :root {
   color-scheme: light;
   --font-sans: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -37,7 +28,6 @@
   --gap: 12px;
   --font-big: 3.25rem;
   --font-small: 1.25rem;
-  /* Six rows share the height left after the display, paddings and footer. */
   --key-height: clamp(3rem, calc((100vh - 410px) / 6), 4.25rem);
 }
 
@@ -66,8 +56,6 @@
     --focus: #8ab4f8;
   }
 }
-
-/* 2. Base ---------------------------------------------------------------- */
 
 *,
 *::before,
@@ -107,8 +95,6 @@ body {
   white-space: nowrap;
   border: 0;
 }
-
-/* 3. Layout -------------------------------------------------------------- */
 
 .app {
   width: 100%;
@@ -159,8 +145,6 @@ kbd {
   text-align: center;
 }
 
-/* No physical keyboard to hint at on touch-only devices, and no room for the
-   hint on short screens (the key tooltips still list the shortcuts). */
 @media (hover: none) and (pointer: coarse), (max-height: 720px) {
   .app__hint {
     display: none;
@@ -172,8 +156,6 @@ kbd {
   color: var(--danger);
   text-align: center;
 }
-
-/* 4. Display ------------------------------------------------------------- */
 
 .display {
   display: flex;
@@ -202,8 +184,6 @@ kbd {
   display: none;
 }
 
-/* The line being worked on is big; the other one is a small caption.
-   --fit is set by app.js to shrink long numbers so they stay visible. */
 .display[data-mode="editing"] .display__expression,
 .display[data-mode="error"] .display__expression,
 .display[data-mode="result"] .display__result {
@@ -222,12 +202,9 @@ kbd {
   color: var(--danger);
 }
 
-/* Parentheses that "=" will close automatically. */
 .ghost {
   opacity: 0.35;
 }
-
-/* 5. Keypad -------------------------------------------------------------- */
 
 .keypad {
   display: grid;
@@ -269,7 +246,6 @@ kbd {
   }
 }
 
-/* .is-pressed mirrors :active when the key is pressed on a physical keyboard. */
 .key:active,
 .key.is-pressed {
   background: color-mix(in srgb, var(--bg), var(--fg) 18%);
@@ -312,9 +288,6 @@ kbd {
   grid-column: span 2;
 }
 
-/* 6. Responsive & motion ------------------------------------------------- */
-
-/* Phones: the calculator becomes the whole screen, keys within thumb reach. */
 @media (max-width: 480px) {
   body {
     padding: 0;
@@ -343,7 +316,6 @@ kbd {
 
   .keypad {
     --gap: 10px;
-    /* Height left after the display (6rem), paddings and gaps, split in 6 rows. */
     grid-auto-rows: clamp(2.75rem, calc((100vh - 230px) / 6), 5.25rem);
     grid-auto-rows: clamp(2.75rem, calc((100svh - 230px) / 6), 5.25rem);
   }
@@ -353,8 +325,6 @@ kbd {
   }
 }
 
-/* Short, wide screens such as phones in landscape: display beside the keypad,
-   keys sized so that all six rows fit the viewport height. */
 @media (max-height: 560px) and (min-width: 560px) {
   :root {
     --font-big: 2.5rem;
@@ -383,7 +353,6 @@ kbd {
 
   .keypad {
     flex: 1.25;
-    /* viewport − body padding (24) − card padding and border (34) − 5 gaps */
     grid-auto-rows: min(3.5rem, calc((100vh - 58px - 5 * var(--gap)) / 6));
     grid-auto-rows: min(3.5rem, calc((100dvh - 58px - 5 * var(--gap)) / 6));
   }

@@ -1,10 +1,7 @@
-// Run with: node --test
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const Calculator = require('../js/calculator.js');
 
-// Shorthand keys: digits, + - * /, . % ( ) as themselves,
-// "=" evaluate, "n" negate (±), "<" backspace, "C" all clear.
 const SPECIAL_KEYS = {
   '.': ['decimal'],
   '%': ['percent'],
